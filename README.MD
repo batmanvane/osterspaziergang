@@ -4,6 +4,8 @@ A styled HTML page presenting **Johann Wolfgang von Goethe’s** poem *Osterspaz
 
 The page features a parchment-inspired design with animated nature elements, scroll-reveal stanzas, and a brief contextual note on the poem’s origin and significance.
 
+**Live page:** https://batmanvane.github.io/osterspaziergang/osterspaziergang.html
+
 ## License
 
 MIT © 2026
