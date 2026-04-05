@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Osterspaziergang – Johann Wolfgang von Goethe</title>
+  <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --ink: #1a1208;
+      --parchment: #f5edd8;
+      --gold: #b8860b;
+      --sage: #5a7a52;
+      --blush: #d4896a;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: var(--parchment);
+      color: var(--ink);
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    .border-strip {
+      height: 8px;
+      background: linear-gradient(90deg, var(--sage) 0%, var(--gold) 35%, var(--blush) 65%, var(--sage) 100%);
+    }
+    .floaters {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+    .floater {
+      position: absolute;
+      font-size: 1.4rem;
+      opacity: 0;
+      animation: drift linear infinite;
+    }
+    .floater:nth-child(1) { left:  5%; animation-duration: 18s; animation-delay:  0s; }
+    .floater:nth-child(2) { left: 15%; animation-duration: 22s; animation-delay:  3s; }
+    .floater:nth-child(3) { left: 28%; animation-duration: 16s; animation-delay:  7s; }
+    .floater:nth-child(4) { left: 42%; animation-duration: 20s; animation-delay:  1s; }
+    .floater:nth-child(5) { left: 58%; animation-duration: 17s; animation-delay:  5s; }
+    .floater:nth-child(6) { left: 70%; animation-duration: 21s; animation-delay:  9s; }
+    .floater:nth-child(7) { left: 83%; animation-duration: 15s; animation-delay:  2s; }
+    .floater:nth-child(8) { left: 93%; animation-duration: 19s; animation-delay:  6s; }
+    @keyframes drift {
+      0%   { transform: translateY(100vh) rotate(-10deg); opacity: 0; }
+      10%  { opacity: 0.4; }
+      90%  { opacity: 0.3; }
+      100% { transform: translateY(-10vh) rotate(15deg); opacity: 0; }
+    }
+    .hero {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 5rem 2rem 3rem;
+    }
+    .ornament {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin: 1.5rem auto;
+      max-width: 420px;
+    }
+    .ornament-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+    .ornament-diamond {
+      width: 8px; height: 8px;
+      background: var(--gold);
+      transform: rotate(45deg);
+      flex-shrink: 0;
+    }
+    .label {
+      font-size: 0.75rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      animation: fadeUp 1s ease both;
+    }
+    h1 {
+      font-family: 'IM Fell English', serif;
+      font-size: clamp(2.4rem, 8vw, 5rem);
+      font-weight: 400;
+      line-height: 1.1;
+      animation: fadeUp 1s 0.2s ease both;
+    }
+    .subtitle {
+      font-style: italic;
+      font-size: clamp(1rem, 2.5vw, 1.3rem);
+      color: var(--sage);
+      margin-top: 0.5rem;
+      animation: fadeUp 1s 0.4s ease both;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    main {
+      position: relative;
+      z-index: 1;
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 0 2rem 6rem;
+    }
+    .poem { counter-reset: stanza; }
+    .stanza {
+      position: relative;
+      margin-bottom: 2.8rem;
+      padding-left: 2.2rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .stanza.visible { opacity: 1; transform: translateY(0); }
+    .stanza::before {
+      counter-increment: stanza;
+      content: counter(stanza);
+      position: absolute;
+      left: 0; top: 0.15rem;
+      font-size: 0.65rem;
+      color: var(--gold);
+      opacity: 0.7;
+    }
+    .stanza p { font-size: clamp(1.05rem, 2.3vw, 1.2rem); line-height: 1.85; }
+    .stanza em { font-style: italic; color: var(--sage); }
+    .section-break {
+      text-align: center;
+      margin: 3rem 0;
+      color: var(--gold);
+      font-size: 1.2rem;
+      letter-spacing: 1em;
+      opacity: 0.6;
+    }
+    .poem-footer {
+      margin-top: 4rem;
+      border-top: 1px solid rgba(184,134,11,0.3);
+      padding-top: 2rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      font-size: 0.92rem;
+      color: rgba(26,18,8,0.65);
+      line-height: 1.7;
+    }
+    .poem-footer strong {
+      display: block;
+      font-family: 'IM Fell English', serif;
+      font-size: 1rem;
+      color: var(--ink);
+      margin-bottom: 0.3rem;
+    }
+    @media (max-width: 500px) { .poem-footer { grid-template-columns: 1fr; } }
+    .scroll-top {
+      position: fixed;
+      bottom: 2rem; right: 2rem;
+      width: 42px; height: 42px;
+      background: var(--gold);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+    }
+    .scroll-top.show { opacity: 1; pointer-events: all; }
+  </style>
+</head>
+<body>
+
+<div class="border-strip"></div>
+
+<div class="floaters" aria-hidden="true">
+  <span class="floater">&#127800;</span>
+  <span class="floater">&#127807;</span>
+  <span class="floater">&#129419;</span>
+  <span class="floater">&#127804;</span>
+  <span class="floater">&#127811;</span>
+  <span class="floater">&#127801;</span>
+  <span class="floater">&#128538;</span>
+  <span class="floater">&#127803;</span>
+</div>
+
+<header class="hero">
+  <p class="label">Johann Wolfgang von Goethe</p>
+  <div class="ornament">
+    <div class="ornament-line"></div>
+    <div class="ornament-diamond"></div>
+    <div class="ornament-line"></div>
+  </div>
+  <h1>Osterspaziergang</h1>
+  <p class="subtitle">Aus Faust &ndash; Der Trag&ouml;die erster Teil &middot; 1808</p>
+  <div class="ornament">
+    <div class="ornament-line"></div>
+    <div class="ornament-diamond"></div>
+    <div class="ornament-line"></div>
+  </div>
+</header>
+
+<main>
+  <article class="poem">
+
+```
+<div class="stanza">
+  <p>Vom Eise befreit sind Strom und B&auml;che</p>
+  <p>Durch des Fr&uuml;hlings holden, belebenden Blick,</p>
+  <p>Im Tale gr&uuml;net Hoffnungsgl&uuml;ck;</p>
+  <p>Der alte Winter, in seiner Schw&auml;che,</p>
+  <p>Zog sich in rauhe Berge zur&uuml;ck.</p>
+</div>
+
+<div class="stanza">
+  <p>Von dort her sendet er, fliehend, nur</p>
+  <p>Ohnm&auml;chtige Schauer k&ouml;rnigen Eises</p>
+  <p>In Streifen &uuml;ber die gr&uuml;nende Flur;</p>
+  <p>Aber die Sonne duldet kein Wei&szlig;es,</p>
+  <p>&Uuml;berall regt sich Bildung und Streben,</p>
+  <p>Alles will sie mit Farben beleben;</p>
+</div>
+
+<div class="stanza">
+  <p>Doch an Blumen fehlts im Revier,</p>
+  <p>Sie nimmt geputzte Menschen daf&uuml;r.</p>
+  <p>Kehre dich um, von diesen H&ouml;hen</p>
+  <p>Nach der Stadt zur&uuml;ckzusehen!</p>
+</div>
+
+<div class="section-break" aria-hidden="true">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<div class="stanza">
+  <p>Aus dem hohlen finstern Tor</p>
+  <p>Dringt ein buntes Gewimmel hervor.</p>
+  <p>Jeder sonnt sich heute so gern.</p>
+  <p>Sie feiern die Auferstehung des Herrn,</p>
+  <p>Denn sie sind selber auferstanden:</p>
+</div>
+
+<div class="stanza">
+  <p>Aus niedriger H&auml;user dumpfen Gem&auml;chern,</p>
+  <p>Aus Handwerks- und Gewerbesbanden,</p>
+  <p>Aus dem Druck von Giebeln und D&auml;chern,</p>
+  <p>Aus der Stra&szlig;en quetschender Enge,</p>
+  <p>Aus der Kirchen ehrw&uuml;rdiger Nacht</p>
+  <p>Sind sie alle ans Licht gebracht.</p>
+</div>
+
+<div class="stanza">
+  <p>Sieh nur, sieh! wie behend sich die Menge</p>
+  <p>Durch die G&auml;rten und Felder zerschl&auml;gt,</p>
+  <p>Wie der Flu&szlig; in Breit und L&auml;nge</p>
+  <p>So manchen lustigen Nachen bewegt,</p>
+  <p>Und bis zum Sinken &uuml;berladen,</p>
+  <p>Entfernt sich dieser letzte Kahn.</p>
+</div>
+
+<div class="section-break" aria-hidden="true">&#10022; &nbsp; &#10022; &nbsp; &#10022;</div>
+
+<div class="stanza">
+  <p>Selbst von des Berges fernen Pfaden</p>
+  <p>Blinken uns farbige Kleider an.</p>
+  <p>Ich h&ouml;re schon des Dorfs Get&uuml;mmel,</p>
+  <p>Hier ist des Volkes wahrer Himmel,</p>
+  <p>Zufrieden jauchzet gro&szlig; und klein:</p>
+  <p><em>Hier bin ich Mensch, hier darf ichs sein!</em></p>
+</div>
+```
+
+  </article>
+
+  <footer class="poem-footer">
+    <div>
+      <strong>Kontext</strong>
+      Der &bdquo;Osterspaziergang&ldquo; entstammt Goethes Drama <em>Faust I</em>.
+      Faust und Wagner schreiten am Ostertag durch eine erwachende Natur &ndash;
+      das Fest der Auferstehung wird zur Feier des menschlichen Lebens selbst.
+    </div>
+    <div>
+      <strong>Entstehung &amp; Thema</strong>
+      Verfasst um 1800, ver&ouml;ffentlicht 1808. Die ber&uuml;hmte Schlusszeile
+      <em>&bdquo;Hier bin ich Mensch, hier darf ichs sein!&ldquo;</em>
+      gilt als eine der pr&auml;gnantesten Aussagen des deutschen Humanismus.
+    </div>
+  </footer>
+</main>
+
+<div class="border-strip"></div>
+
+<button class="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Nach oben">↑</button>
+
+<script>
+  const stanzas = document.querySelectorAll('.stanza');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  stanzas.forEach(s => observer.observe(s));
+
+  const btn = document.querySelector('.scroll-top');
+  window.addEventListener('scroll', () => {
+    btn.classList.toggle('show', window.scrollY > 400);
+  });
+</script>
+
+</body>
+</html>
